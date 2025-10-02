@@ -5,5 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MedicalAI.Core\MedicalAI.Core.csproj" />
+    <ProjectReference Include="..\..\MedicalAI.Infrastructure\MedicalAI.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

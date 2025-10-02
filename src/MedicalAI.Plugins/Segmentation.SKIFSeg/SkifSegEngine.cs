@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MedicalAI.Core;
 using MedicalAI.Core.ML;
 using MedicalAI.Infrastructure.ML;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Segmentation.SKIFSeg
 {
@@ -15,7 +16,7 @@ namespace Segmentation.SKIFSeg
 
     public static class ServiceCollectionExtensions
     {
-        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddSkifSeg(this Microsoft.Extensions.DependencyInjection.IServiceCollection s)
+        public static IServiceCollection AddSkifSeg(this IServiceCollection s)
         {
             s.AddSingleton<ISegmentationEngine, SkifSegEngine>();
             return s;

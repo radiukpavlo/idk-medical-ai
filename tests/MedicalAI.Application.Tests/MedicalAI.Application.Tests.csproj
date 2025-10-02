@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\MedicalAI.Core\MedicalAI.Core.csproj" />
     <ProjectReference Include="..\..\src\MedicalAI.Infrastructure\MedicalAI.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\MedicalAI.Application\MedicalAI.Application.csproj" />
-    <ProjectReference Include="..\..\src\MedicalAI.UI\MedicalAI.UI.csproj" Condition="'$(MSBuildProjectName)'=='MedicalAI.UI.Tests'" />
+    <ProjectReference Include="..\..\src/MedicalAI.Application\MedicalAI.Application.csproj" />
   </ItemGroup>
 </Project>

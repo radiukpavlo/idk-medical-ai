@@ -1,15 +1,14 @@
-using System;
-using System.IO;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using MedicalAI.Core.ML;
+using MedicalAI.Core.Reports;
 
 namespace MedicalAI.Infrastructure.Reports
 {
-    public static class PdfReportService
+    public class PdfReportService : IReportService
     {
-        public static void ExportCaseReport(string path, NlpSummary summary)
+        public void ExportCaseReport(string path, NlpSummary summary)
         {
             Document.Create(container =>
             {

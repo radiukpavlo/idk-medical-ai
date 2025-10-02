@@ -5,6 +5,9 @@ using MedicalAI.Infrastructure.Imaging;
 using MedicalAI.Infrastructure.ML;
 using MedicalAI.Core.Imaging;
 using MedicalAI.Core.ML;
+using MedicalAI.Core.Reports;
+using MedicalAI.Infrastructure.Reports;
+using MedicalAI.Application.Commands;
 
 namespace MedicalAI.Infrastructure.DI
 {
@@ -20,6 +23,8 @@ namespace MedicalAI.Infrastructure.DI
             services.AddSingleton<IClassificationEngine, MockClassificationEngine>();
             services.AddSingleton<IKnowledgeDistillationService, InMemoryDistillationService>();
             services.AddSingleton<INlpReasoningService, SimpleNlpUAService>();
+            services.AddSingleton<IReportService, PdfReportService>();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ImportDicomCommand).Assembly));
             return services;
         }
     }

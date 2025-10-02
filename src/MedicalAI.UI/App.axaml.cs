@@ -8,10 +8,8 @@ using System.Threading;
 
 namespace MedicalAI.UI
 {
-    public partial class App : Application
+    public partial class App : Avalonia.Application
     {
-        public static ServiceProvider Services { get; private set; } = default!;
-
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -19,15 +17,17 @@ namespace MedicalAI.UI
 
         public override void OnFrameworkInitializationCompleted()
         {
-            var sc = new ServiceCollection();
-            sc.AddInfrastructure();
-            Services = sc.BuildServiceProvider();
+            var services = new ServiceCollection();
+            services.AddInfrastructure();
+            services.AddTransient<MainWindow>(); // Register MainWindow for DI
+
+            var serviceProvider = services.BuildServiceProvider();
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("uk-UA");
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                desktop.MainWindow = serviceProvider.GetRequiredService<MainWindow>();
             }
             base.OnFrameworkInitializationCompleted();
         }
