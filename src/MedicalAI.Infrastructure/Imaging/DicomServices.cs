@@ -7,82 +7,216 @@ using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Imaging;
 using FellowOakDicom.IO;
+using Microsoft.Extensions.Logging;
 using MedicalAI.Core;
 using MedicalAI.Core.Imaging;
+using MedicalAI.Core.Performance;
 
 namespace MedicalAI.Infrastructure.Imaging
 {
     public class DicomImportService : IDicomImportService
     {
+        private readonly ILogger<DicomImportService> _logger;
+        private readonly IParallelProcessor _parallelProcessor;
+        private readonly IMemoryManager _memoryManager;
+
+        public DicomImportService(
+            ILogger<DicomImportService> logger,
+            IParallelProcessor parallelProcessor,
+            IMemoryManager memoryManager)
+        {
+            _logger = logger;
+            _parallelProcessor = parallelProcessor;
+            _memoryManager = memoryManager;
+        }
+
         public async Task<ImportResult> ImportAsync(string path, DicomImportOptions options, CancellationToken ct)
         {
-            int images = 0, series = 0, studies = 0;
-            foreach (var file in Directory.EnumerateFiles(path, "*.dcm", SearchOption.AllDirectories))
-            {
-                ct.ThrowIfCancellationRequested();
-                try
+            _logger.LogInformation("Starting DICOM import from path: {Path}", path);
+            
+            var files = Directory.EnumerateFiles(path, "*.dcm", SearchOption.AllDirectories).ToList();
+            _logger.LogInformation("Found {FileCount} DICOM files to process", files.Count);
+
+            // Process files in parallel with memory management
+            var results = await _parallelProcessor.ProcessInParallelAsync(
+                files,
+                async (file, cancellationToken) =>
                 {
-                    var dcm = await DicomFile.OpenAsync(file);
-                    var studyUid = dcm.Dataset.GetSingleValueOrDefault(DicomTag.StudyInstanceUID, Guid.NewGuid().ToString());
-                    var seriesUid = dcm.Dataset.GetSingleValueOrDefault(DicomTag.SeriesInstanceUID, Guid.NewGuid().ToString());
-                    images++;
-                }
-                catch { /* ignore corrupt */ }
-            }
-            // for demo, estimate series/studies roughly
-            series = Math.Max(1, images/4);
-            studies = Math.Max(1, series/2);
-            return new ImportResult(studies, series, images);
+                    cancellationToken.ThrowIfCancellationRequested();
+                    
+                    // Check memory before processing each file
+                    var fileInfo = new FileInfo(file);
+                    if (!_memoryManager.HasSufficientMemory(fileInfo.Length))
+                    {
+                        await _memoryManager.ForceCleanupAsync();
+                    }
+
+                    try
+                    {
+                        var dcm = await DicomFile.OpenAsync(file);
+                        var studyUid = dcm.Dataset.GetSingleValueOrDefault(DicomTag.StudyInstanceUID, Guid.NewGuid().ToString());
+                        var seriesUid = dcm.Dataset.GetSingleValueOrDefault(DicomTag.SeriesInstanceUID, Guid.NewGuid().ToString());
+                        return new { StudyUid = studyUid, SeriesUid = seriesUid, Success = true };
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to process DICOM file: {File}", file);
+                        return new { StudyUid = "", SeriesUid = "", Success = false };
+                    }
+                },
+                maxConcurrency: Math.Max(1, Environment.ProcessorCount / 2), // Use half the cores
+                ct);
+
+            var successfulResults = results.Where(r => r.Success).ToList();
+            var images = successfulResults.Count;
+            var uniqueSeries = successfulResults.Select(r => r.SeriesUid).Distinct().Count();
+            var uniqueStudies = successfulResults.Select(r => r.StudyUid).Distinct().Count();
+
+            _logger.LogInformation("DICOM import completed. Studies: {Studies}, Series: {Series}, Images: {Images}", 
+                uniqueStudies, uniqueSeries, images);
+
+            return new ImportResult(uniqueStudies, uniqueSeries, images);
         }
     }
 
     public class DicomAnonymizerService : IDicomAnonymizerService
     {
+        private readonly ILogger<DicomAnonymizerService> _logger;
+        private readonly IParallelProcessor _parallelProcessor;
+        private readonly IMemoryManager _memoryManager;
+
+        public DicomAnonymizerService(
+            ILogger<DicomAnonymizerService> logger,
+            IParallelProcessor parallelProcessor,
+            IMemoryManager memoryManager)
+        {
+            _logger = logger;
+            _parallelProcessor = parallelProcessor;
+            _memoryManager = memoryManager;
+        }
+
         public async Task<int> AnonymizeInPlaceAsync(IEnumerable<string> filePaths, AnonymizerProfile profile, CancellationToken ct)
         {
-            int count = 0;
-            foreach (var f in filePaths)
-            {
-                ct.ThrowIfCancellationRequested();
-                try
+            var filePathsList = filePaths.ToList();
+            _logger.LogInformation("Starting anonymization of {FileCount} DICOM files with profile: {Profile}", 
+                filePathsList.Count, profile.Name);
+
+            var results = await _parallelProcessor.ProcessInParallelAsync(
+                filePathsList,
+                async (filePath, cancellationToken) =>
                 {
-                    var file = await DicomFile.OpenAsync(f);
-                    var anon = new DicomAnonymizer();
-                    anon.AnonymizeInPlace(file.Dataset);
-                    await file.SaveAsync(f);
-                    count++;
-                }
-                catch { /* skip */ }
-            }
-            return count;
+                    cancellationToken.ThrowIfCancellationRequested();
+                    
+                    // Check memory before processing each file
+                    var fileInfo = new FileInfo(filePath);
+                    if (!_memoryManager.HasSufficientMemory(fileInfo.Length * 2)) // Need extra memory for processing
+                    {
+                        await _memoryManager.ForceCleanupAsync();
+                    }
+
+                    try
+                    {
+                        var file = await DicomFile.OpenAsync(filePath);
+                        var anon = new DicomAnonymizer();
+                        anon.AnonymizeInPlace(file.Dataset);
+                        await file.SaveAsync(filePath);
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to anonymize DICOM file: {FilePath}", filePath);
+                        return false;
+                    }
+                },
+                maxConcurrency: Math.Max(1, Environment.ProcessorCount / 2),
+                ct);
+
+            var successCount = results.Count(success => success);
+            _logger.LogInformation("Anonymization completed. Successfully processed: {SuccessCount}/{TotalCount} files", 
+                successCount, filePathsList.Count);
+
+            return successCount;
         }
     }
 
     public class VolumeStore : IVolumeStore
     {
-        public Task<Volume3D> LoadAsync(ImageRef imageRef, CancellationToken ct)
+        private readonly ILogger<VolumeStore> _logger;
+        private readonly ILargeImageManager _largeImageManager;
+        private readonly IMemoryManager _memoryManager;
+
+        public VolumeStore(
+            ILogger<VolumeStore> logger,
+            ILargeImageManager largeImageManager,
+            IMemoryManager memoryManager)
         {
+            _logger = logger;
+            _largeImageManager = largeImageManager;
+            _memoryManager = memoryManager;
+        }
+
+        public async Task<Volume3D> LoadAsync(ImageRef imageRef, CancellationToken ct)
+        {
+            _logger.LogInformation("Loading volume from: {FilePath}", imageRef.FilePath);
+
             if (imageRef.FilePath.EndsWith(".nii", StringComparison.OrdinalIgnoreCase))
             {
-                var (w,h,d,vx,vy,vz,data) = NiftiReader.Read(imageRef.FilePath);
-                return Task.FromResult(new Volume3D(w,h,d,vx,vy,vz,data));
+                // Use memory-efficient loading for NIfTI files
+                return await _largeImageManager.LoadWithStreamingAsync(
+                    imageRef.FilePath,
+                    data =>
+                    {
+                        var (w, h, d, vx, vy, vz, volumeData) = NiftiReader.ReadFromBytes(data);
+                        return new Volume3D(w, h, d, vx, vy, vz, volumeData);
+                    },
+                    ct);
             }
-            // Minimal DICOM single-slice loader using FO-DICOM
-            var dcm = DicomFile.Open(imageRef.FilePath);
+
+            // Optimized DICOM loading with memory management
+            var fileInfo = new FileInfo(imageRef.FilePath);
+            if (!_memoryManager.HasSufficientMemory(fileInfo.Length * 3)) // Extra memory for processing
+            {
+                await _memoryManager.ForceCleanupAsync();
+            }
+
+            var dcm = await DicomFile.OpenAsync(imageRef.FilePath);
             var pixelData = DicomPixelData.Create(dcm.Dataset);
             var bytes = pixelData.GetFrame(0).Data;
             int rows = dcm.Dataset.GetSingleValueOrDefault(DicomTag.Rows, 0);
             int cols = dcm.Dataset.GetSingleValueOrDefault(DicomTag.Columns, 0);
-            var volume = new byte[rows*cols];
+            
+            var volume = new byte[rows * cols];
             bytes.CopyTo(volume, 0);
-            return Task.FromResult(new Volume3D(cols, rows, 1, 1,1,1, volume));
+            
+            _logger.LogInformation("Volume loaded successfully. Dimensions: {Cols}x{Rows}x1", cols, rows);
+            return new Volume3D(cols, rows, 1, 1, 1, 1, volume);
         }
 
-        public Task SaveMaskAsync(ImageRef imageRef, Mask3D mask, CancellationToken ct)
+        public async Task SaveMaskAsync(ImageRef imageRef, Mask3D mask, CancellationToken ct)
         {
             var outPath = Path.ChangeExtension(imageRef.FilePath, ".mask.bin");
-            File.WriteAllBytes(outPath, mask.Labels);
-            return Task.CompletedTask;
+            _logger.LogInformation("Saving mask to: {OutPath}", outPath);
+
+            // Use chunked writing for large masks
+            const int chunkSize = 1024 * 1024; // 1MB chunks
+            if (mask.Labels.Length > chunkSize)
+            {
+                await _largeImageManager.ProcessInChunksAsync(
+                    mask.Labels,
+                    chunkSize,
+                    async (chunk, offset) =>
+                    {
+                        using var fs = new FileStream(outPath, offset == 0 ? FileMode.Create : FileMode.Append);
+                        await fs.WriteAsync(chunk, 0, chunk.Length, ct);
+                    },
+                    ct);
+            }
+            else
+            {
+                await File.WriteAllBytesAsync(outPath, mask.Labels, ct);
+            }
+
+            _logger.LogInformation("Mask saved successfully");
         }
     }
 }

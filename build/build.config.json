@@ -1,0 +1,56 @@
+{
+  "project": {
+    "name": "MedicalAI.ThesisSuite",
+    "version": "1.0.0",
+    "description": "AI-powered medical diagnostic suite with DICOM/NIfTI processing capabilities"
+  },
+  "build": {
+    "defaultConfiguration": "Release",
+    "targetFramework": "net8.0",
+    "outputPath": "./dist",
+    "cleanBeforeBuild": true,
+    "restorePackages": true,
+    "runTests": false,
+    "generateDocumentation": false
+  },
+  "runtimes": {
+    "primary": ["win-x64", "linux-x64", "osx-x64"],
+    "secondary": ["win-x86", "win-arm64", "linux-arm64", "osx-arm64"],
+    "all": ["win-x64", "win-x86", "win-arm64", "linux-x64", "linux-arm64", "osx-x64", "osx-arm64"]
+  },
+  "publish": {
+    "singleFile": true,
+    "selfContained": true,
+    "trimmed": false,
+    "readyToRun": true,
+    "includeNativeLibrariesForSelfExtract": true
+  },
+  "packaging": {
+    "includeModels": true,
+    "includeSampleData": true,
+    "includeDocumentation": true,
+    "compressionLevel": "Optimal",
+    "generateChecksums": true
+  },
+  "testing": {
+    "defaultConfiguration": "Debug",
+    "enableCoverage": false,
+    "coverageThreshold": 80,
+    "excludeFromCoverage": [
+      "[*.Tests]*",
+      "[*]*.Program",
+      "[*]*Exception*",
+      "**/Migrations/**"
+    ],
+    "testTimeout": 300000
+  },
+  "paths": {
+    "source": "./src",
+    "tests": "./tests",
+    "models": "./models",
+    "datasets": "./datasets/samples",
+    "documentation": "./docs",
+    "build": "./build",
+    "output": "./dist"
+  }
+}

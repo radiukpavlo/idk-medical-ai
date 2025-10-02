@@ -1,0 +1,67 @@
+{
+  "debugging": {
+    "defaultConfiguration": "Debug",
+    "enableSourceLink": true,
+    "enablePortablePdb": true,
+    "optimizeCode": false,
+    "defineConstants": ["DEBUG", "TRACE"],
+    "warningsAsErrors": false,
+    "treatWarningsAsErrors": false
+  },
+  "profiling": {
+    "enableProfiling": false,
+    "profilingTools": [
+      "dotMemory",
+      "dotTrace",
+      "PerfView",
+      "Visual Studio Diagnostic Tools"
+    ],
+    "memoryProfiling": {
+      "enableMemoryProfiling": false,
+      "collectAllocations": true,
+      "trackObjectLifetime": true,
+      "enableGCProfiling": true
+    },
+    "performanceProfiling": {
+      "enableCpuProfiling": false,
+      "samplingInterval": 1,
+      "enableCallTree": true,
+      "enableHotPaths": true
+    }
+  },
+  "logging": {
+    "defaultLevel": "Information",
+    "enableConsoleLogging": true,
+    "enableFileLogging": true,
+    "logFilePath": "./logs/debug.log",
+    "enableStructuredLogging": true,
+    "logFormat": "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+    "categories": {
+      "MedicalAI.Core": "Debug",
+      "MedicalAI.Application": "Debug",
+      "MedicalAI.Infrastructure": "Information",
+      "MedicalAI.UI": "Information",
+      "MedicalAI.Plugins": "Debug",
+      "Microsoft": "Warning",
+      "System": "Warning"
+    }
+  },
+  "diagnostics": {
+    "enableDiagnostics": true,
+    "enableEventCounters": true,
+    "enableMetrics": true,
+    "metricsEndpoint": "http://localhost:9090/metrics",
+    "healthCheckEndpoint": "/health",
+    "enableTracing": false,
+    "tracingEndpoint": "http://localhost:14268/api/traces"
+  },
+  "testing": {
+    "enableTestLogging": true,
+    "testLogLevel": "Debug",
+    "enableTestCoverage": false,
+    "coverageFormat": "cobertura",
+    "enableParallelTesting": true,
+    "maxParallelThreads": 4,
+    "testTimeout": 30000
+  }
+}

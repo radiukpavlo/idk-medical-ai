@@ -4,34 +4,136 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using MedicalAI.Core;
 using MedicalAI.Core.ML;
+using MedicalAI.Core.Performance;
 
 namespace MedicalAI.Infrastructure.ML
 {
     public class MockSegmentationEngine : ISegmentationEngine
     {
-        public Task<SegmentationResult> RunAsync(Volume3D volume, SegmentationOptions options, CancellationToken ct)
+        private readonly ILogger<MockSegmentationEngine> _logger;
+        private readonly IParallelProcessor _parallelProcessor;
+        private readonly IMemoryManager _memoryManager;
+
+        public MockSegmentationEngine(
+            ILogger<MockSegmentationEngine> logger,
+            IParallelProcessor parallelProcessor,
+            IMemoryManager memoryManager)
         {
-            // Simple threshold-based 3D mask for demo; deterministic
-            byte[] mask = new byte[volume.Voxels.Length];
-            for (int i=0;i<volume.Voxels.Length;i++)
-                mask[i] = volume.Voxels[i] >= (byte)(options.Threshold*255f) ? (byte)1 : (byte)0;
-            var labels = new Dictionary<int, string>{{1,"Myocardium"}};
-            return Task.FromResult(new SegmentationResult(new Mask3D(volume.Width, volume.Height, volume.Depth, mask), labels));
+            _logger = logger;
+            _parallelProcessor = parallelProcessor;
+            _memoryManager = memoryManager;
+        }
+
+        public async Task<SegmentationResult> RunAsync(Volume3D volume, SegmentationOptions options, CancellationToken ct)
+        {
+            _logger.LogInformation("Starting segmentation for volume: {Width}x{Height}x{Depth}", 
+                volume.Width, volume.Height, volume.Depth);
+
+            // Check memory requirements
+            var requiredMemory = volume.Voxels.Length * 2; // Original + mask
+            if (!_memoryManager.HasSufficientMemory(requiredMemory))
+            {
+                await _memoryManager.ForceCleanupAsync();
+            }
+
+            // Process volume in parallel chunks for better performance
+            const int chunkSize = 64 * 64 * 64; // Process in 64x64x64 chunks
+            var mask = new byte[volume.Voxels.Length];
+            var threshold = (byte)(options.Threshold * 255f);
+
+            if (volume.Voxels.Length > chunkSize)
+            {
+                // Parallel processing for large volumes
+                var chunks = _parallelProcessor.PartitionForParallelProcessing(
+                    Enumerable.Range(0, volume.Voxels.Length), chunkSize);
+
+                await _parallelProcessor.ProcessInParallelAsync(
+                    chunks,
+                    async (chunk, cancellationToken) =>
+                    {
+                        await Task.Run(() =>
+                        {
+                            foreach (var i in chunk)
+                            {
+                                cancellationToken.ThrowIfCancellationRequested();
+                                mask[i] = volume.Voxels[i] >= threshold ? (byte)1 : (byte)0;
+                            }
+                        }, cancellationToken);
+                        return true;
+                    },
+                    maxConcurrency: Environment.ProcessorCount,
+                    ct);
+            }
+            else
+            {
+                // Sequential processing for small volumes
+                for (int i = 0; i < volume.Voxels.Length; i++)
+                {
+                    ct.ThrowIfCancellationRequested();
+                    mask[i] = volume.Voxels[i] >= threshold ? (byte)1 : (byte)0;
+                }
+            }
+
+            var labels = new Dictionary<int, string> { { 1, "Myocardium" } };
+            var result = new SegmentationResult(new Mask3D(volume.Width, volume.Height, volume.Depth, mask), labels);
+
+            _logger.LogInformation("Segmentation completed successfully");
+            return result;
         }
     }
 
     public class MockClassificationEngine : IClassificationEngine
     {
-        public Task<ClassificationResult> PredictAsync(GraphDescriptor graph, CancellationToken ct)
+        private readonly ILogger<MockClassificationEngine> _logger;
+        private readonly IParallelProcessor _parallelProcessor;
+
+        public MockClassificationEngine(
+            ILogger<MockClassificationEngine> logger,
+            IParallelProcessor parallelProcessor)
         {
+            _logger = logger;
+            _parallelProcessor = parallelProcessor;
+        }
+
+        public async Task<ClassificationResult> PredictAsync(GraphDescriptor graph, CancellationToken ct)
+        {
+            _logger.LogInformation("Starting classification for graph with {NodeCount} nodes and {EdgeCount} edges", 
+                graph.Nodes.Count, graph.Edges.Count);
+
+            // Process node features in parallel for large graphs
+            double sum;
+            if (graph.Nodes.Count > 100)
+            {
+                var partitions = _parallelProcessor.PartitionForParallelProcessing(graph.Nodes, 50);
+                var partialSums = await _parallelProcessor.ProcessInParallelAsync(
+                    partitions,
+                    async (partition, cancellationToken) =>
+                    {
+                        return await Task.Run(() =>
+                        {
+                            return partition.SelectMany(n => n.Features).Select(f => (double)f).Sum();
+                        }, cancellationToken);
+                    },
+                    maxConcurrency: Environment.ProcessorCount,
+                    ct);
+
+                sum = partialSums.Sum();
+            }
+            else
+            {
+                sum = graph.Nodes.SelectMany(n => n.Features).Select(f => (double)f).Sum();
+            }
+
             // Deterministic pseudo-probabilities from features sum
-            double sum = graph.Nodes.SelectMany(n => n.Features).Select(f => (double)f).Sum();
-            float p1 = (float)((Math.Sin(sum)+1)/2.0);
+            float p1 = (float)((Math.Sin(sum) + 1) / 2.0);
             float p0 = 1 - p1;
-            var dict = new Dictionary<string,float>{{"Normal", p0}, {"Pathology", p1}};
-            return Task.FromResult(new ClassificationResult(dict));
+            var dict = new Dictionary<string, float> { { "Normal", p0 }, { "Pathology", p1 } };
+
+            _logger.LogInformation("Classification completed. Pathology probability: {Probability:F3}", p1);
+            return new ClassificationResult(dict);
         }
     }
 

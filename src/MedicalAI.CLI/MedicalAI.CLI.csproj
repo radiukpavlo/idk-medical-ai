@@ -11,6 +11,7 @@
     <ProjectReference Include="..\MedicalAI.Infrastructure\MedicalAI.Infrastructure.csproj" />
     <ProjectReference Include="..\MedicalAI.Plugins\Segmentation.SKIFSeg\Segmentation.SKIFSeg.csproj" />
     <ProjectReference Include="..\MedicalAI.Plugins\Classification.KIGCN\Classification.KIGCN.csproj" />
+    <ProjectReference Include="..\MedicalAI.Plugins\Distillation.MultiTeacher\Distillation.MultiTeacher.csproj" />
     <ProjectReference Include="..\MedicalAI.Plugins\NLP.MedReasoning.UA\NLP.MedReasoning.UA.csproj" />
   </ItemGroup>
 </Project>
