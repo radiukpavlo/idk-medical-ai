@@ -1,0 +1,8 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            x:Class="MedicalAI.UI.Views.DashboardView">
+  <StackPanel Margin="16">
+    <TextBlock Text="Ласкаво просимо до MedicalAI Thesis Suite" FontSize="20" Margin="0,0,0,16"/>
+    <TextBlock Text="Український інтерфейс за замовчуванням; додаток працює офлайн для демонстрації."/>
+  </StackPanel>
+</UserControl>

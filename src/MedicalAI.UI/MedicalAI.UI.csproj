@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>MedicalAI.UI</AssemblyName>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <NeutralLanguage>uk-UA</NeutralLanguage>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+    <PackageReference Include="FluentAvaloniaUI" Version="2.4.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="ScottPlot.Avalonia" Version="5.0.56" />
+    <PackageReference Include="Avalonia.Headless" Version="11.0.10" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="..\..\models\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="..\..\datasets\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MedicalAI.Core\MedicalAI.Core.csproj" />
+    <ProjectReference Include="..\MedicalAI.Application\MedicalAI.Application.csproj" />
+    <ProjectReference Include="..\MedicalAI.Infrastructure\MedicalAI.Infrastructure.csproj" />
+    <ProjectReference Include="..\MedicalAI.Plugins\Segmentation.SKIFSeg\Segmentation.SKIFSeg.csproj" />
+    <ProjectReference Include="..\MedicalAI.Plugins\Classification.KIGCN\Classification.KIGCN.csproj" />
+    <ProjectReference Include="..\MedicalAI.Plugins\Distillation.MultiTeacher\Distillation.MultiTeacher.csproj" />
+    <ProjectReference Include="..\MedicalAI.Plugins\NLP.MedReasoning.UA\NLP.MedReasoning.UA.csproj" />
+  </ItemGroup>
+</Project>

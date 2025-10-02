@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            x:Class="MedicalAI.UI.Views.AboutView">
+  <ScrollViewer Margin="16">
+    <StackPanel>
+      <TextBlock Text="Про дисертацію" FontSize="18" Margin="0,0,0,12"/>
+      <TextBlock TextWrapping="Wrap">
+        Цей застосунок реалізує робочі процеси з дисертації: інтеграція знань,
+        сегментація серцевих МРТ (SKIF‑Seg), графова класифікація (KI‑GCN),
+        багатовчительська дистиляція знань та україномовне медичне висновування.
+      </TextBlock>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

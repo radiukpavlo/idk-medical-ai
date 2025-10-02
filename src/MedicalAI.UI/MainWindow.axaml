@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fa="using:FluentAvalonia.UI.Controls"
+        xmlns:views="using:MedicalAI.UI.Views"
+        x:Class="MedicalAI.UI.MainWindow"
+        Width="1100" Height="720" Title="MedicalAI Thesis Suite">
+  <Grid RowDefinitions="Auto,*">
+    <Border Background="#22FF0000" IsHitTestVisible="False">
+      <TextBlock Text="Лише для дослідницького використання. Не є медичним виробом." Margin="8" />
+    </Border>
+    <fa:NavigationView PaneDisplayMode="Left" IsBackButtonVisible="Collapsed">
+      <fa:NavigationView.MenuItems>
+        <fa:NavigationViewItem Content="Панель" Tag="dashboard"/>
+        <fa:NavigationViewItem Content="Набори даних" Tag="datasets"/>
+        <fa:NavigationViewItem Content="Сегментація" Tag="segmentation"/>
+        <fa:NavigationViewItem Content="Класифікація" Tag="classification"/>
+        <fa:NavigationViewItem Content="Дистиляція" Tag="distillation"/>
+        <fa:NavigationViewItem Content="НЛП" Tag="nlp"/>
+        <fa:NavigationViewItem Content="Звіти" Tag="reports"/>
+        <fa:NavigationViewItem Content="Налаштування" Tag="settings"/>
+        <fa:NavigationViewItem Content="Про дисертацію" Tag="about"/>
+      </fa:NavigationView.MenuItems>
+      <fa:Frame x:Name="ContentFrame">
+        <views:DashboardView/>
+      </fa:Frame>
+    </fa:NavigationView>
+  </Grid>
+</Window>

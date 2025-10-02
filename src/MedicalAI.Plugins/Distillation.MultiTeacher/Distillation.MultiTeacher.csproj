@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Grpc.Net.Client" Version="2.63.0" />
+    <ProjectReference Include="..\..\MedicalAI.Core\MedicalAI.Core.csproj" />
+  </ItemGroup>
+</Project>

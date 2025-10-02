@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MedicalAI.Core\MedicalAI.Core.csproj" />
+    <ProjectReference Include="..\..\MedicalAI.Infrastructure\MedicalAI.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MedicalAI.Core\MedicalAI.Core.csproj" />
+    <ProjectReference Include="..\MedicalAI.Application\MedicalAI.Application.csproj" />
+    <ProjectReference Include="..\MedicalAI.Infrastructure\MedicalAI.Infrastructure.csproj" />
+    <ProjectReference Include="..\MedicalAI.Plugins\Segmentation.SKIFSeg\Segmentation.SKIFSeg.csproj" />
+    <ProjectReference Include="..\MedicalAI.Plugins\Classification.KIGCN\Classification.KIGCN.csproj" />
+    <ProjectReference Include="..\MedicalAI.Plugins\NLP.MedReasoning.UA\NLP.MedReasoning.UA.csproj" />
+  </ItemGroup>
+</Project>
