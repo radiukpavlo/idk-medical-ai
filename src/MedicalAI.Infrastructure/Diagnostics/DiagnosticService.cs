@@ -204,7 +204,7 @@ namespace MedicalAI.Infrastructure.Diagnostics
             }
         }
 
-        private async Task<ComponentHealth> CheckMemoryHealthAsync(CancellationToken cancellationToken)
+        private Task<ComponentHealth> CheckMemoryHealthAsync(CancellationToken cancellationToken)
         {
             var currentUsage = _memoryManager.GetCurrentMemoryUsage();
             var availableMemory = _memoryManager.GetAvailableMemory();
@@ -232,7 +232,8 @@ namespace MedicalAI.Infrastructure.Diagnostics
                 _ => "Memory status unknown"
             };
 
-            return new ComponentHealth("Memory", status, message, metrics);
+            var health = new ComponentHealth("Memory", status, message, metrics);
+            return Task.FromResult(health);
         }
 
         private ComponentHealth CheckDiskHealth()
@@ -357,7 +358,7 @@ namespace MedicalAI.Infrastructure.Diagnostics
                 loadedAssemblies);
         }
 
-        private async Task<IEnumerable<string>> CheckConfigurationAsync(CancellationToken cancellationToken)
+        private Task<IEnumerable<string>> CheckConfigurationAsync(CancellationToken cancellationToken)
         {
             var issues = new List<string>();
 
@@ -381,7 +382,7 @@ namespace MedicalAI.Infrastructure.Diagnostics
                 }
             }
 
-            return issues;
+            return Task.FromResult<IEnumerable<string>>(issues);
         }
 
         private IEnumerable<LogEntry> GetRecentLogs(int count)

@@ -12,7 +12,7 @@ namespace MedicalAI.Infrastructure.Performance
     public class MemoryManager : IMemoryManager, IDisposable
     {
         private readonly ILogger<MemoryManager> _logger;
-        private readonly Timer? _memoryMonitorTimer;
+        private Timer? _memoryMonitorTimer;
         private readonly long _memoryPressureThreshold;
         private bool _disposed;
 
@@ -62,10 +62,10 @@ namespace MedicalAI.Infrastructure.Performance
 
         public void StartMemoryPressureMonitoring(CancellationToken cancellationToken)
         {
-            if (_disposed)
+            if (_disposed || _memoryMonitorTimer != null)
                 return;
 
-            var timer = new Timer(async _ =>
+            _memoryMonitorTimer = new Timer(async _ =>
             {
                 if (cancellationToken.IsCancellationRequested)
                     return;
@@ -80,7 +80,11 @@ namespace MedicalAI.Infrastructure.Performance
                 }
             }, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));
 
-            cancellationToken.Register(() => timer?.Dispose());
+            cancellationToken.Register(() =>
+            {
+                _memoryMonitorTimer?.Dispose();
+                _memoryMonitorTimer = null;
+            });
         }
 
         public void Dispose()
@@ -88,6 +92,7 @@ namespace MedicalAI.Infrastructure.Performance
             if (!_disposed)
             {
                 _memoryMonitorTimer?.Dispose();
+                _memoryMonitorTimer = null;
                 _disposed = true;
             }
         }

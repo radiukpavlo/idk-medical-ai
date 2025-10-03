@@ -10,11 +10,16 @@ using MedicalAI.Core.ML;
 using MedicalAI.Infrastructure.Imaging;
 using MedicalAI.Infrastructure.ML;
 using MedicalAI.Core;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
+using MedicalAI.Infrastructure.Performance;
+using MedicalAI.Core.Performance;
 
 namespace MedicalAI.UI.Tests
 {
-    public class NiftiProcessingTests
+    public class NiftiProcessingTests : AvaloniaHeadlessTestBase
     {
+        // Helpers are centralized in TestHelpers
         private readonly string _sampleNiftiPath;
 
         public NiftiProcessingTests()
@@ -26,7 +31,7 @@ namespace MedicalAI.UI.Tests
         public void MockSegmentationEngine_Initializes_Successfully()
         {
             // Arrange & Act
-            var engine = new MockSegmentationEngine();
+            var engine = TestHelpers.CreateSegEngine(TestHelpers.CreateMemoryManager());
             
             // Assert
             engine.Should().NotBeNull();
@@ -36,7 +41,7 @@ namespace MedicalAI.UI.Tests
         public async Task MockSegmentationEngine_RunAsync_WithValidVolume_ReturnsResult()
         {
             // Arrange
-            var engine = new MockSegmentationEngine();
+            var engine = TestHelpers.CreateSegEngine(TestHelpers.CreateMemoryManager());
             var volume = new Volume3D(10, 10, 5, 1.0f, 1.0f, 1.0f, new byte[500]);
             var options = new SegmentationOptions("mock_model.onnx", 0.5f);
             var cancellationToken = CancellationToken.None;
@@ -60,7 +65,7 @@ namespace MedicalAI.UI.Tests
         public async Task MockSegmentationEngine_RunAsync_WithDifferentThreshold_ProducesDifferentResults()
         {
             // Arrange
-            var engine = new MockSegmentationEngine();
+            var engine = TestHelpers.CreateSegEngine(TestHelpers.CreateMemoryManager());
             // Create volume with some variation in voxel values
             var voxels = new byte[100];
             for (int i = 0; i < 100; i++)
@@ -97,7 +102,7 @@ namespace MedicalAI.UI.Tests
         public async Task VolumeStore_LoadAsync_WithNiftiFile_ReturnsVolume()
         {
             // Arrange
-            var store = new VolumeStore();
+            var store = TestHelpers.CreateVolumeStore(TestHelpers.CreateMemoryManager());
             var cancellationToken = CancellationToken.None;
 
             // Skip test if sample file doesn't exist
@@ -214,14 +219,15 @@ namespace MedicalAI.UI.Tests
         }
     }
 
-    public class SegmentationIntegrationTests
+    public class SegmentationIntegrationTests : AvaloniaHeadlessTestBase
     {
         [Fact]
         public async Task FullSegmentationWorkflow_WithMockData_CompletesSuccessfully()
         {
             // Arrange
-            var volumeStore = new VolumeStore();
-            var segmentationEngine = new MockSegmentationEngine();
+            var mem = TestHelpers.CreateMemoryManager();
+            var volumeStore = TestHelpers.CreateVolumeStore(mem);
+            var segmentationEngine = TestHelpers.CreateSegEngine(mem);
             
             // Create a test volume
             var voxels = new byte[1000];
@@ -273,7 +279,7 @@ namespace MedicalAI.UI.Tests
         public async Task SegmentationEngine_WithCancellation_HandlesCancellationToken()
         {
             // Arrange
-            var engine = new MockSegmentationEngine();
+            var engine = TestHelpers.CreateSegEngine(TestHelpers.CreateMemoryManager());
             var volume = new Volume3D(10, 10, 5, 1.0f, 1.0f, 1.0f, new byte[500]);
             var options = new SegmentationOptions("mock_model.onnx", 0.5f);
             

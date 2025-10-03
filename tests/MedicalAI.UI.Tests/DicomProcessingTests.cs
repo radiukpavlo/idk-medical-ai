@@ -8,11 +8,16 @@ using FluentAssertions;
 using MedicalAI.Core.Imaging;
 using MedicalAI.Infrastructure.Imaging;
 using MedicalAI.Core;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
+using MedicalAI.Infrastructure.Performance;
+using MedicalAI.Core.Performance;
 
 namespace MedicalAI.UI.Tests
 {
-    public class DicomProcessingTests
+    public class DicomProcessingTests : AvaloniaHeadlessTestBase
     {
+        // Helpers are centralized in TestHelpers
         private readonly string _sampleDicomPath;
         private readonly string _testDataDirectory;
 
@@ -26,7 +31,7 @@ namespace MedicalAI.UI.Tests
         public void DicomImportService_Initializes_Successfully()
         {
             // Arrange & Act
-            var service = new DicomImportService();
+            var service = TestHelpers.CreateDicomImportService(TestHelpers.CreateMemoryManager());
             
             // Assert
             service.Should().NotBeNull();
@@ -36,7 +41,7 @@ namespace MedicalAI.UI.Tests
         public void DicomAnonymizerService_Initializes_Successfully()
         {
             // Arrange & Act
-            var service = new DicomAnonymizerService();
+            var service = TestHelpers.CreateDicomAnonymizerService(TestHelpers.CreateMemoryManager());
             
             // Assert
             service.Should().NotBeNull();
@@ -46,7 +51,7 @@ namespace MedicalAI.UI.Tests
         public void VolumeStore_Initializes_Successfully()
         {
             // Arrange & Act
-            var store = new VolumeStore();
+            var store = TestHelpers.CreateVolumeStore(TestHelpers.CreateMemoryManager());
             
             // Assert
             store.Should().NotBeNull();
@@ -56,7 +61,7 @@ namespace MedicalAI.UI.Tests
         public async Task DicomImportService_ImportAsync_WithValidDirectory_ReturnsResult()
         {
             // Arrange
-            var service = new DicomImportService();
+            var service = TestHelpers.CreateDicomImportService(TestHelpers.CreateMemoryManager());
             var options = new DicomImportOptions(Anonymize: false);
             var cancellationToken = CancellationToken.None;
 
@@ -83,7 +88,7 @@ namespace MedicalAI.UI.Tests
         public async Task DicomImportService_ImportAsync_WithNonExistentDirectory_HandlesGracefully()
         {
             // Arrange
-            var service = new DicomImportService();
+            var service = TestHelpers.CreateDicomImportService(TestHelpers.CreateMemoryManager());
             var options = new DicomImportOptions(Anonymize: false);
             var cancellationToken = CancellationToken.None;
             var nonExistentPath = Path.Combine("non", "existent", "path");
@@ -100,7 +105,7 @@ namespace MedicalAI.UI.Tests
         public async Task DicomAnonymizerService_AnonymizeInPlaceAsync_WithValidFiles_ReturnsCount()
         {
             // Arrange
-            var service = new DicomAnonymizerService();
+            var service = TestHelpers.CreateDicomAnonymizerService(TestHelpers.CreateMemoryManager());
             var profile = new AnonymizerProfile("Standard");
             var cancellationToken = CancellationToken.None;
 
@@ -140,7 +145,7 @@ namespace MedicalAI.UI.Tests
         public async Task VolumeStore_LoadAsync_WithDicomFile_ReturnsVolume()
         {
             // Arrange
-            var store = new VolumeStore();
+            var store = TestHelpers.CreateVolumeStore(TestHelpers.CreateMemoryManager());
             var cancellationToken = CancellationToken.None;
 
             // Skip test if sample file doesn't exist
@@ -176,7 +181,7 @@ namespace MedicalAI.UI.Tests
         public async Task VolumeStore_SaveMaskAsync_WithValidMask_CompletesSuccessfully()
         {
             // Arrange
-            var store = new VolumeStore();
+            var store = TestHelpers.CreateVolumeStore(TestHelpers.CreateMemoryManager());
             var cancellationToken = CancellationToken.None;
             var tempFile = Path.GetTempFileName();
             
@@ -208,7 +213,7 @@ namespace MedicalAI.UI.Tests
         }
     }
 
-    public class DicomIntegrationTests
+    public class DicomIntegrationTests : AvaloniaHeadlessTestBase
     {
         [Fact]
         public void DicomImportOptions_CreatesWithDefaults()

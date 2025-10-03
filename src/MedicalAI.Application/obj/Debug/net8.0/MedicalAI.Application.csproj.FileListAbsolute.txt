@@ -1,0 +1,16 @@
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\bin\Debug\net8.0\MedicalAI.Application.deps.json
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\bin\Debug\net8.0\MedicalAI.Application.dll
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\bin\Debug\net8.0\MedicalAI.Application.pdb
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\bin\Debug\net8.0\MedicalAI.Core.dll
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\bin\Debug\net8.0\MedicalAI.Core.pdb
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalAI.Application.csproj.AssemblyReference.cache
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalAI.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalAI.Application.AssemblyInfoInputs.cache
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalAI.Application.AssemblyInfo.cs
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalAI.Application.csproj.CoreCompileInputs.cache
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalAI.Application.sourcelink.json
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalA.3D19B5ED.Up2Date
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalAI.Application.dll
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\refint\MedicalAI.Application.dll
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\MedicalAI.Application.pdb
+C:\Courses\idk-medical-ai\src\MedicalAI.Application\obj\Debug\net8.0\ref\MedicalAI.Application.dll

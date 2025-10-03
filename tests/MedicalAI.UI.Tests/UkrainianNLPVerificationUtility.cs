@@ -336,7 +336,7 @@ namespace MedicalAI.UI.Tests
                 if (emptyResult != Sentiment.Neutral)
                     return false;
                 
-                var nullResult = await service.AnalyzeSentimentAsync(null, CancellationToken.None);
+                var nullResult = await service.AnalyzeSentimentAsync(null!, CancellationToken.None);
                 if (nullResult != Sentiment.Neutral)
                     return false;
                 

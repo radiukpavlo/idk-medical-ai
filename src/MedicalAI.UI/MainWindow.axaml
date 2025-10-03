@@ -8,7 +8,7 @@
     <Border Background="#22FF0000" IsHitTestVisible="False">
       <TextBlock Text="Лише для дослідницького використання. Не є медичним виробом." Margin="8" />
     </Border>
-    <fa:NavigationView PaneDisplayMode="Left" IsBackButtonVisible="Collapsed">
+    <fa:NavigationView PaneDisplayMode="Left" IsBackButtonVisible="False">
       <fa:NavigationView.MenuItems>
         <fa:NavigationViewItem Content="Панель" Tag="dashboard"/>
         <fa:NavigationViewItem Content="Набори даних" Tag="datasets"/>

@@ -11,16 +11,20 @@ using Classification.KIGCN;
 using Segmentation.SKIFSeg;
 using Distillation.MultiTeacher;
 using NLP.MedReasoning.UA;
+using Microsoft.Extensions.Logging.Abstractions;
+using MedicalAI.Infrastructure.Performance;
+using MedicalAI.Core.Performance;
 
 namespace MedicalAI.UI.Tests
 {
-    public class AIModelIntegrationTests
+    public class AIModelIntegrationTests : AvaloniaHeadlessTestBase
     {
+        // Helpers are centralized in TestHelpers
         [Fact]
         public void KigcnEngine_Initializes_Successfully()
         {
             // Arrange & Act
-            var engine = new KigcnEngine();
+            var engine = TestHelpers.CreateKigcn();
             
             // Assert
             engine.Should().NotBeNull();
@@ -30,7 +34,7 @@ namespace MedicalAI.UI.Tests
         public async Task KigcnEngine_PredictAsync_WithValidGraph_ReturnsResult()
         {
             // Arrange
-            var engine = new KigcnEngine();
+            var engine = TestHelpers.CreateKigcn();
             var nodes = new List<GraphNode>
             {
                 new GraphNode(1, new float[] { 0.1f, 0.2f, 0.3f }),
@@ -65,7 +69,7 @@ namespace MedicalAI.UI.Tests
         public void SkifSegEngine_Initializes_Successfully()
         {
             // Arrange & Act
-            var engine = new SkifSegEngine();
+            var engine = TestHelpers.CreateSkifSeg(TestHelpers.CreateMemoryManager());
             
             // Assert
             engine.Should().NotBeNull();
@@ -75,7 +79,7 @@ namespace MedicalAI.UI.Tests
         public async Task SkifSegEngine_RunAsync_WithValidVolume_ReturnsResult()
         {
             // Arrange
-            var engine = new SkifSegEngine();
+            var engine = TestHelpers.CreateSkifSeg(TestHelpers.CreateMemoryManager());
             var volume = new Volume3D(10, 10, 5, 1.0f, 1.0f, 1.0f, new byte[500]);
             var options = new SegmentationOptions("skif_model.onnx", 0.5f);
             var cancellationToken = CancellationToken.None;
@@ -226,14 +230,15 @@ namespace MedicalAI.UI.Tests
         }
     }
 
-    public class AIModelPluginIntegrationTests
+    public class AIModelPluginIntegrationTests : AvaloniaHeadlessTestBase
     {
         [Fact]
         public async Task FullAIWorkflow_WithAllPlugins_CompletesSuccessfully()
         {
             // Arrange
-            var segmentationEngine = new SkifSegEngine();
-            var classificationEngine = new KigcnEngine();
+            var mem = TestHelpers.CreateMemoryManager();
+            var segmentationEngine = TestHelpers.CreateSkifSeg(mem);
+            var classificationEngine = TestHelpers.CreateKigcn();
             var distillationService = new DistillationService();
             var nlpService = new UkrainianNlpService();
 
@@ -288,8 +293,9 @@ namespace MedicalAI.UI.Tests
         public async Task AIPlugins_HandleCancellation_Gracefully()
         {
             // Arrange
-            var segmentationEngine = new SkifSegEngine();
-            var classificationEngine = new KigcnEngine();
+            var mem = TestHelpers.CreateMemoryManager();
+            var segmentationEngine = TestHelpers.CreateSkifSeg(mem);
+            var classificationEngine = TestHelpers.CreateKigcn();
             var nlpService = new UkrainianNlpService();
 
             var volume = new Volume3D(5, 5, 5, 1.0f, 1.0f, 1.0f, new byte[125]);

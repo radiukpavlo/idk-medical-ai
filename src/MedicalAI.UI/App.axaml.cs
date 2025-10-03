@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MedicalAI.UI
 {
-    public partial class App : Application
+    public partial class App : Avalonia.Application
     {
         public static ServiceProvider Services { get; private set; } = default!;
 

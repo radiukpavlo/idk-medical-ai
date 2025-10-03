@@ -17,5 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\MedicalAI.Core\MedicalAI.Core.csproj" />
     <ProjectReference Include="..\..\src\MedicalAI.Application\MedicalAI.Application.csproj" />
+    <ProjectReference Include="..\..\src\MedicalAI.Infrastructure\MedicalAI.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

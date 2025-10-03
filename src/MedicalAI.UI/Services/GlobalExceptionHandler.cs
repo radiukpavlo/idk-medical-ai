@@ -120,7 +120,7 @@ namespace MedicalAI.UI.Services
 
         private async Task ShowCriticalErrorDialogAsync(Exception exception, string diagnosticsPath)
         {
-            await Dispatcher.UIThread.InvokeAsync(async () =>
+            await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 // In a real implementation, this would show a proper dialog
                 // For now, we'll use a simple message box concept

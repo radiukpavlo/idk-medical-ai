@@ -149,8 +149,8 @@ namespace MedicalAI.Infrastructure.Performance
 
         public int GetQueuedTaskCount()
         {
-            // This is an approximation since Channel doesn't expose exact count
-            return _reader.CanRead ? 1 : 0;
+            // Approximation: check if there is at least one item queued
+            return _reader.TryPeek(out _) ? 1 : 0;
         }
 
         private async Task ProcessTasksAsync(CancellationToken cancellationToken)

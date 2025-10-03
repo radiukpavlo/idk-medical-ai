@@ -2,10 +2,14 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
+using MedicalAI.Infrastructure.Performance;
 using System.Collections.Generic;
 using MedicalAI.Core.Imaging;
 using MedicalAI.Infrastructure.Imaging;
 using MedicalAI.Core;
+using MedicalAI.Core.Performance;
 
 namespace MedicalAI.UI.Tests
 {
@@ -53,13 +57,32 @@ namespace MedicalAI.UI.Tests
             return result;
         }
         
+        private static IMemoryManager CreateMemoryManager()
+            => new MemoryManager(NullLogger<MemoryManager>.Instance);
+
+        private static IParallelProcessor CreateParallelProcessor()
+            => new ParallelProcessor(NullLogger<ParallelProcessor>.Instance);
+
+        private static VolumeStore CreateVolumeStore(IMemoryManager memory)
+        {
+            var lim = new LargeImageManager(NullLogger<LargeImageManager>.Instance, memory);
+            return new VolumeStore(NullLogger<VolumeStore>.Instance, lim, memory);
+        }
+
+        private static DicomImportService CreateDicomImportService(IMemoryManager memory)
+            => new DicomImportService(NullLogger<DicomImportService>.Instance, CreateParallelProcessor(), memory);
+
+        private static DicomAnonymizerService CreateDicomAnonymizerService(IMemoryManager memory)
+            => new DicomAnonymizerService(NullLogger<DicomAnonymizerService>.Instance, CreateParallelProcessor(), memory);
+
         private static bool TestServiceCreation()
         {
             try
             {
-                var importService = new DicomImportService();
-                var anonymizerService = new DicomAnonymizerService();
-                var volumeStore = new VolumeStore();
+                var mem = CreateMemoryManager();
+                var importService = CreateDicomImportService(mem);
+                var anonymizerService = CreateDicomAnonymizerService(mem);
+                var volumeStore = CreateVolumeStore(mem);
                 
                 return importService != null && 
                        anonymizerService != null && 
@@ -75,7 +98,8 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var service = new DicomImportService();
+                var mem = CreateMemoryManager();
+                var service = CreateDicomImportService(mem);
                 var options = new DicomImportOptions(Anonymize: false);
                 var samplePath = Path.Combine("datasets", "samples");
                 
@@ -103,7 +127,8 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var service = new DicomAnonymizerService();
+                var mem = CreateMemoryManager();
+                var service = CreateDicomAnonymizerService(mem);
                 var profile = new AnonymizerProfile("Standard");
                 var emptyFileList = new List<string>();
                 
@@ -120,7 +145,8 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var store = new VolumeStore();
+                var mem = CreateMemoryManager();
+                var store = CreateVolumeStore(mem);
                 var sampleDicomPath = Path.Combine("datasets", "samples", "sample.dcm");
                 
                 // If sample file doesn't exist, just test that the method can be called
@@ -149,7 +175,8 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var store = new VolumeStore();
+                var mem = CreateMemoryManager();
+                var store = CreateVolumeStore(mem);
                 var tempFile = Path.GetTempFileName();
                 
                 try

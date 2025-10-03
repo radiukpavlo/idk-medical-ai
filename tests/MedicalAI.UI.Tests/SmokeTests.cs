@@ -2,6 +2,7 @@ using Xunit;
 using FluentAssertions;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Threading;
 using MedicalAI.UI;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MedicalAI.UI.Tests
 {
-    public class ApplicationStartupTests
+    public class ApplicationStartupTests : AvaloniaHeadlessTestBase
     {
         [Fact]
         public void App_Initializes_Successfully()
@@ -109,7 +110,7 @@ namespace MedicalAI.UI.Tests
         }
     }
 
-    public class UIComponentTests
+    public class UIComponentTests : AvaloniaHeadlessTestBase
     {
         [Fact]
         public void App_SetsUkrainianCulture()

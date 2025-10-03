@@ -11,7 +11,7 @@ using NLP.MedReasoning.UA;
 
 namespace MedicalAI.UI.Tests
 {
-    public class UkrainianNLPTests
+    public class UkrainianNLPTests : AvaloniaHeadlessTestBase
     {
         [Fact]
         public void UkrainianNlpService_Initializes_Successfully()
@@ -301,7 +301,7 @@ namespace MedicalAI.UI.Tests
         [InlineData("")]
         [InlineData("   ")]
         [InlineData(null)]
-        public async Task UkrainianNlpService_AnalyzeSentimentAsync_WithEmptyOrNullText_ReturnsNeutral(string text)
+        public async Task UkrainianNlpService_AnalyzeSentimentAsync_WithEmptyOrNullText_ReturnsNeutral(string? text)
         {
             // Arrange
             var service = new UkrainianNlpService();
@@ -315,7 +315,7 @@ namespace MedicalAI.UI.Tests
         }
     }
 
-    public class UkrainianNLPIntegrationTests
+    public class UkrainianNLPIntegrationTests : AvaloniaHeadlessTestBase
     {
         [Fact]
         public async Task UkrainianNLP_MedicalTerminology_ProcessesCorrectly()

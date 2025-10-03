@@ -1,0 +1,645 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.UI\\MedicalAI.UI.csproj": {}
+  },
+  "projects": {
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Application\\MedicalAI.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Application\\MedicalAI.Application.csproj",
+        "projectName": "MedicalAI.Application",
+        "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Application\\MedicalAI.Application.csproj",
+        "packagesPath": "C:\\Users\\radiu\\.nuget\\packages\\",
+        "outputPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\radiu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
+            "MediatR.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[11.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj",
+        "projectName": "MedicalAI.Core",
+        "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj",
+        "packagesPath": "C:\\Users\\radiu\\.nuget\\packages\\",
+        "outputPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\radiu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj",
+        "projectName": "MedicalAI.Infrastructure",
+        "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\radiu\\.nuget\\packages\\",
+        "outputPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\radiu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Google.Protobuf": {
+              "target": "Package",
+              "version": "[3.25.3, )"
+            },
+            "Grpc.Net.Client": {
+              "target": "Package",
+              "version": "[2.63.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.ML.OnnxRuntime": {
+              "target": "Package",
+              "version": "[1.23.0, )"
+            },
+            "Microsoft.ML.OnnxRuntime.DirectML": {
+              "target": "Package",
+              "version": "[1.23.0, )"
+            },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2024.10.0, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Serilog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[3.1.11, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "fo-dicom": {
+              "target": "Package",
+              "version": "[5.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Classification.KIGCN\\Classification.KIGCN.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Classification.KIGCN\\Classification.KIGCN.csproj",
+        "projectName": "Classification.KIGCN",
+        "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Classification.KIGCN\\Classification.KIGCN.csproj",
+        "packagesPath": "C:\\Users\\radiu\\.nuget\\packages\\",
+        "outputPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Classification.KIGCN\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\radiu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Distillation.MultiTeacher\\Distillation.MultiTeacher.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Distillation.MultiTeacher\\Distillation.MultiTeacher.csproj",
+        "projectName": "Distillation.MultiTeacher",
+        "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Distillation.MultiTeacher\\Distillation.MultiTeacher.csproj",
+        "packagesPath": "C:\\Users\\radiu\\.nuget\\packages\\",
+        "outputPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Distillation.MultiTeacher\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\radiu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Grpc.Net.Client": {
+              "target": "Package",
+              "version": "[2.63.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\NLP.MedReasoning.UA\\NLP.MedReasoning.UA.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\NLP.MedReasoning.UA\\NLP.MedReasoning.UA.csproj",
+        "projectName": "NLP.MedReasoning.UA",
+        "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\NLP.MedReasoning.UA\\NLP.MedReasoning.UA.csproj",
+        "packagesPath": "C:\\Users\\radiu\\.nuget\\packages\\",
+        "outputPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\NLP.MedReasoning.UA\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\radiu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Segmentation.SKIFSeg\\Segmentation.SKIFSeg.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Segmentation.SKIFSeg\\Segmentation.SKIFSeg.csproj",
+        "projectName": "Segmentation.SKIFSeg",
+        "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Segmentation.SKIFSeg\\Segmentation.SKIFSeg.csproj",
+        "packagesPath": "C:\\Users\\radiu\\.nuget\\packages\\",
+        "outputPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Segmentation.SKIFSeg\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\radiu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.UI\\MedicalAI.UI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.UI\\MedicalAI.UI.csproj",
+        "projectName": "MedicalAI.UI",
+        "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.UI\\MedicalAI.UI.csproj",
+        "packagesPath": "C:\\Users\\radiu\\.nuget\\packages\\",
+        "outputPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.UI\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\radiu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Application\\MedicalAI.Application.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Application\\MedicalAI.Application.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Core\\MedicalAI.Core.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Infrastructure\\MedicalAI.Infrastructure.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Classification.KIGCN\\Classification.KIGCN.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Classification.KIGCN\\Classification.KIGCN.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Distillation.MultiTeacher\\Distillation.MultiTeacher.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Distillation.MultiTeacher\\Distillation.MultiTeacher.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\NLP.MedReasoning.UA\\NLP.MedReasoning.UA.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\NLP.MedReasoning.UA\\NLP.MedReasoning.UA.csproj"
+              },
+              "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Segmentation.SKIFSeg\\Segmentation.SKIFSeg.csproj": {
+                "projectPath": "C:\\Courses\\idk-medical-ai\\src\\MedicalAI.Plugins\\Segmentation.SKIFSeg\\Segmentation.SKIFSeg.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Avalonia": {
+              "target": "Package",
+              "version": "[11.2.5, )"
+            },
+            "Avalonia.Desktop": {
+              "target": "Package",
+              "version": "[11.2.5, )"
+            },
+            "Avalonia.Headless": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[11.2.5, )"
+            },
+            "Avalonia.Themes.Fluent": {
+              "target": "Package",
+              "version": "[11.2.5, )"
+            },
+            "CommunityToolkit.Mvvm": {
+              "target": "Package",
+              "version": "[8.4.0, )"
+            },
+            "FluentAvaloniaUI": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "ScottPlot.Avalonia": {
+              "target": "Package",
+              "version": "[5.0.56, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.414/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

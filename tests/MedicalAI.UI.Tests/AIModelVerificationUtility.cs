@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
+using MedicalAI.Infrastructure.Performance;
 using MedicalAI.Core.ML;
 using MedicalAI.Infrastructure.ML;
 using MedicalAI.Core;
@@ -9,6 +12,7 @@ using Classification.KIGCN;
 using Segmentation.SKIFSeg;
 using Distillation.MultiTeacher;
 using NLP.MedReasoning.UA;
+using MedicalAI.Core.Performance;
 
 namespace MedicalAI.UI.Tests
 {
@@ -64,12 +68,25 @@ namespace MedicalAI.UI.Tests
             return result;
         }
         
+        private static IParallelProcessor CreateParallelProcessor()
+            => new ParallelProcessor(NullLogger<ParallelProcessor>.Instance);
+
+        private static MedicalAI.Core.Performance.IMemoryManager CreateMemoryManager()
+            => new MemoryManager(NullLogger<MemoryManager>.Instance);
+
+        private static KigcnEngine CreateKigcn()
+            => new KigcnEngine(NullLogger<MedicalAI.Infrastructure.ML.MockClassificationEngine>.Instance, CreateParallelProcessor());
+
+        private static SkifSegEngine CreateSkifSeg(IMemoryManager mem)
+            => new SkifSegEngine(NullLogger<MedicalAI.Infrastructure.ML.MockSegmentationEngine>.Instance, CreateParallelProcessor(), mem);
+
         private static bool TestPluginInitialization()
         {
             try
             {
-                var kigcnEngine = new KigcnEngine();
-                var skifSegEngine = new SkifSegEngine();
+                var mem = CreateMemoryManager();
+                var kigcnEngine = CreateKigcn();
+                var skifSegEngine = CreateSkifSeg(mem);
                 var distillationService = new DistillationService();
                 var nlpService = new UkrainianNlpService();
                 
@@ -88,7 +105,7 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var engine = new KigcnEngine();
+                var engine = CreateKigcn();
                 var nodes = new List<GraphNode>
                 {
                     new GraphNode(1, new float[] { 0.1f, 0.2f, 0.3f }),
@@ -121,7 +138,8 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var engine = new SkifSegEngine();
+                var mem = CreateMemoryManager();
+                var engine = CreateSkifSeg(mem);
                 var volume = new Volume3D(10, 10, 5, 1.0f, 1.0f, 1.0f, new byte[500]);
                 var options = new SegmentationOptions("test_model.onnx", 0.5f);
                 
@@ -208,8 +226,9 @@ namespace MedicalAI.UI.Tests
             try
             {
                 // Initialize all AI components
-                var segmentationEngine = new SkifSegEngine();
-                var classificationEngine = new KigcnEngine();
+                var mem = CreateMemoryManager();
+                var segmentationEngine = CreateSkifSeg(mem);
+                var classificationEngine = CreateKigcn();
                 var nlpService = new UkrainianNlpService();
                 
                 // Step 1: Create test volume and run segmentation
@@ -257,7 +276,7 @@ namespace MedicalAI.UI.Tests
             try
             {
                 // Test with empty/null inputs
-                var classificationEngine = new KigcnEngine();
+                var classificationEngine = CreateKigcn();
                 var emptyGraph = new GraphDescriptor(new List<GraphNode>(), new List<GraphEdge>());
                 
                 var result = await classificationEngine.PredictAsync(emptyGraph, CancellationToken.None);

@@ -28,18 +28,24 @@ if (!(Test-Path $OutputPath)) {
 
 # Clean previous builds
 Write-Host "Cleaning previous builds..." -ForegroundColor Yellow
-Get-ChildItem -Path "src" -Recurse -Directory -Name "bin", "obj" | ForEach-Object {
-    $fullPath = Join-Path "src" $_
-    if (Test-Path $fullPath) {
-        Remove-Item $fullPath -Recurse -Force
-        Write-Verbose "Cleaned: $fullPath"
+Get-ChildItem -Path "src" -Recurse -Directory |
+    Where-Object { $_.Name -in @('bin', 'obj') } |
+    ForEach-Object {
+        $fullPath = $_.FullName
+        if (Test-Path $fullPath) {
+            Remove-Item $fullPath -Recurse -Force
+            Write-Verbose "Cleaned: $fullPath"
+        }
     }
-}
 
 # Restore packages
 if (!$SkipRestore) {
     Write-Host "Restoring NuGet packages..." -ForegroundColor Yellow
-    dotnet restore --verbosity minimal
+    $restoreArgs = @('--verbosity', 'minimal')
+    if ($Runtime) {
+        $restoreArgs += @('--runtime', $Runtime)
+    }
+    dotnet restore @restoreArgs
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Package restore failed"
         exit 1
@@ -66,7 +72,7 @@ if ($RunTests) {
 # Publish application
 Write-Host "Publishing application for $Runtime..." -ForegroundColor Yellow
 $publishPath = "src/MedicalAI.UI/bin/$Configuration/net8.0/$Runtime/publish"
-dotnet publish ./src/MedicalAI.UI -c $Configuration -r $Runtime -p:PublishSingleFile=true -p:SelfContained=true --no-build
+dotnet publish ./src/MedicalAI.UI -c $Configuration -r $Runtime -p:PublishSingleFile=true -p:SelfContained=true
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Publish failed"
     exit 1

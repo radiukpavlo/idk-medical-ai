@@ -1,6 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:fa="using:FluentAvalonia.UI.Controls"
+             xmlns:fa="using:FluentAvalonia.Styling"
              x:Class="MedicalAI.UI.App">
   <Application.Styles>
     <FluentTheme />

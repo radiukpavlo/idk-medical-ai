@@ -92,9 +92,9 @@ namespace MedicalAI.Infrastructure.Security
                 .ToList();
 
             // Log validation failures
-            foreach (var result in validationResults.Where(r => !r.Validation.IsValid || !r.Validation.IsSafe))
+            foreach (var entry in validationResults.Where(r => !r.Validation.IsValid || !r.Validation.IsSafe))
             {
-                var error = $"File validation failed for {result.FilePath}: {string.Join(", ", result.Validation.SecurityIssues)}";
+                var error = $"File validation failed for {entry.FilePath}: {string.Join(", ", entry.Validation.SecurityIssues)}";
                 errors.Add(error);
                 _logger.LogWarning(error);
             }

@@ -2,11 +2,15 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Abstractions;
+using MedicalAI.Infrastructure.Performance;
+using Microsoft.Extensions.Logging;
 using MedicalAI.Core.Imaging;
 using MedicalAI.Core.ML;
 using MedicalAI.Infrastructure.Imaging;
 using MedicalAI.Infrastructure.ML;
 using MedicalAI.Core;
+using MedicalAI.Core.Performance;
 
 namespace MedicalAI.UI.Tests
 {
@@ -58,12 +62,27 @@ namespace MedicalAI.UI.Tests
             return result;
         }
         
+        private static IMemoryManager CreateMemoryManager()
+            => new MemoryManager(NullLogger<MemoryManager>.Instance);
+
+        private static VolumeStore CreateVolumeStore(IMemoryManager memory)
+        {
+            var lim = new LargeImageManager(NullLogger<LargeImageManager>.Instance, memory);
+            return new VolumeStore(NullLogger<VolumeStore>.Instance, lim, memory);
+        }
+
+        private static MockSegmentationEngine CreateSegmentationEngine(IMemoryManager memory)
+            => new MockSegmentationEngine(NullLogger<MockSegmentationEngine>.Instance,
+                                          new ParallelProcessor(NullLogger<ParallelProcessor>.Instance),
+                                          memory);
+
         private static bool TestServiceCreation()
         {
             try
             {
-                var volumeStore = new VolumeStore();
-                var segmentationEngine = new MockSegmentationEngine();
+                var mem = CreateMemoryManager();
+                var volumeStore = CreateVolumeStore(mem);
+                var segmentationEngine = CreateSegmentationEngine(mem);
                 
                 return volumeStore != null && segmentationEngine != null;
             }
@@ -77,7 +96,8 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var store = new VolumeStore();
+                var mem = CreateMemoryManager();
+                var store = CreateVolumeStore(mem);
                 var sampleNiftiPath = Path.Combine("datasets", "samples", "sample.nii");
                 
                 // If sample file doesn't exist, test with a mock scenario
@@ -117,7 +137,8 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var engine = new MockSegmentationEngine();
+                var mem = CreateMemoryManager();
+                var engine = CreateSegmentationEngine(mem);
                 var volume = new Volume3D(10, 10, 5, 1.0f, 1.0f, 1.0f, new byte[500]);
                 var options = new SegmentationOptions("mock_model.onnx", 0.5f);
                 
@@ -150,7 +171,8 @@ namespace MedicalAI.UI.Tests
                 var volume = new Volume3D(10, 10, 10, 1.0f, 1.0f, 1.0f, voxels);
                 
                 // Test segmentation with different thresholds
-                var engine = new MockSegmentationEngine();
+                var mem = CreateMemoryManager();
+                var engine = CreateSegmentationEngine(mem);
                 var lowThreshold = new SegmentationOptions("model.onnx", 0.2f);
                 var highThreshold = new SegmentationOptions("model.onnx", 0.8f);
                 
@@ -172,7 +194,8 @@ namespace MedicalAI.UI.Tests
         {
             try
             {
-                var store = new VolumeStore();
+                var mem = CreateMemoryManager();
+                var store = CreateVolumeStore(mem);
                 var tempFile = Path.GetTempFileName();
                 
                 try
@@ -213,8 +236,9 @@ namespace MedicalAI.UI.Tests
             try
             {
                 // Create a complete segmentation workflow
-                var volumeStore = new VolumeStore();
-                var segmentationEngine = new MockSegmentationEngine();
+                var mem = CreateMemoryManager();
+                var volumeStore = CreateVolumeStore(mem);
+                var segmentationEngine = CreateSegmentationEngine(mem);
                 
                 // Create test volume
                 var voxels = new byte[1000];
