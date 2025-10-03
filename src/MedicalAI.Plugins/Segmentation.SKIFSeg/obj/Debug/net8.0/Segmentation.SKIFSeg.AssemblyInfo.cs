@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Segmentation.SKIFSeg")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c2d7b1e0299dbc627bde870cbffbf96dd432abf9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2feb190abf6fe53dd08206300e205729f9d39034")]
 [assembly: System.Reflection.AssemblyProductAttribute("Segmentation.SKIFSeg")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Segmentation.SKIFSeg")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
